@@ -1,5 +1,3 @@
-# Development Flake
-
 {
   description = "Cisco DevNet Training Shell";
 
@@ -12,24 +10,28 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+
+      pythonModules = with pkgs.python312Packages; [
+        pip
+        requests
+        ncclient
+        pyaml
+        netmiko
+        xmltodict
+      ];
     in {
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = with pkgs; [
-          # Local utilities
           neovim
+          ripgrep
+          bat
+          meld
           git
           tig
           nixfmt-rfc-style
           curl
-
-          # Python
           python312Full
-          python312Packages.requests
-          python312Packages.ncclient
-          python312Packages.pyaml
-          python312Packages.netmiko
-          python312Packages.xmltodict
-        ];
+        ] ++ pythonModules;
       };
     };
 }
