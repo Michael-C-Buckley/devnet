@@ -33,6 +33,12 @@
           curl
           python312Full
         ] ++ pythonModules;
+
+        shellHook = ''
+          export IOS_XE1="192.168.48.25"
+          export IOS_USER="devnetuser!"
+          export IOS_PW="MoreCisco!!1~~"
+        '';
       };
     };
 }
