@@ -34,7 +34,7 @@ def add_loopback(loopback_id: int, host: HostT, port: int, username: str, passwo
 
     response = device.send_command('show ip interface brief')
 
-    return bool(search(f'loopback{loopback_id}', response))
+    return bool(search(f'[Ll]oopback{loopback_id}', response))
 
 if __name__ == '__main__':
     result = add_loopback(1000, TEST_HOST1, 22, TEST_USER, TEST_PW)

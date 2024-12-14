@@ -13,6 +13,7 @@
 
       pythonModules = with pkgs.python312Packages; [
         pip
+        debugpy
         requests
         ncclient
         pyaml
@@ -36,8 +37,8 @@
 
         shellHook = ''
           export IOS_XE1="192.168.48.25"
-          export IOS_USER="devnetuser!"
-          export IOS_PW="MoreCisco!!1~~"
+          export IOS_USER="michael"
+          export IOS_PW="asdfasdf"
         '';
       };
     };
