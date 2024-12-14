@@ -5,6 +5,9 @@ Output/
 **/__pycache__/
 scrap/
 
+# Nix
+.direnv/
+
 # Template added
 # Editors
 .vscode/
