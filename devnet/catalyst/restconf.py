@@ -4,25 +4,14 @@
 """
 
 # Python Modules
-from ipaddress import IPv4Address as IPv4, IPv6Address as IPv6
-from json import dumps, loads
-from os import getenv
-from re import search
+from json import loads
 
 # Third-Party Modules
 from requests import get, Response
 from requests.auth import HTTPBasicAuth
 
-type HostT = IPv4 | IPv6 | str
+from devnet.common import HostT, STANDARD_HEADERS, TEST_HOST1, TEST_PW, TEST_USER
 
-TEST_HOST1 = getenv('IOS_XE1')
-TEST_USER = getenv('IOS_USER')
-TEST_PW = getenv('IOS_PW')
-
-STANDARD_HEADERS = {
-    'Accept': "application/yang-data+json",
-    'Content-Type': "application/yang-data+json",
-}
 
 def get_interfaces(host: HostT, port: int, user: str, password: str) -> Response:
     base_url = f'https://{host}:{port}/restconf/data/ietf-interfaces:interfaces/interface'

@@ -39,6 +39,7 @@
         ] ++ pythonModules;
 
         shellHook = ''
+          export PYTHONPATH=$PWD/src:$PYTHONPATH
           export IOS_XE1="192.168.48.25"
           export IOS_USER="michael"
           export IOS_PW="asdfasdf"
