@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "devnet"
+version = "0.1.0"
+description = "Some DevNet Training Aids and Projects"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Michael", email = "michaelcbuckley@proton.me" }
+]
+maintainers = [
+    { name = "Michael", email = "michaelcbuckley@proton.me" }
+]
+keywords = ["example", "project"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.32.3",
+    "numpy>=1.24.0",
+    "xmltodict>=0.13.0",
+    "ncclient>=0.6.16",
+    "netmiko>=4.4.0",
+    "pyaml>=6.0.2",
+]
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+dev = ["mypy"]
+
+[project.urls]
+repository = "https://github.com/Michael-C-Buckley/devnet"

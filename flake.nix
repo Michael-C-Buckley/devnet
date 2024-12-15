@@ -19,6 +19,9 @@
         pyaml
         netmiko
         xmltodict
+        wheel
+        setuptools
+        mypy
       ];
     in {
       devShells.${system}.default = pkgs.mkShellNoCC {
