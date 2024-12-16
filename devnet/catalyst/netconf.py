@@ -17,6 +17,13 @@ TEST_HOST1 = getenv('IOS_XE1')
 TEST_USER = getenv('IOS_USER')
 TEST_PW = getenv('IOS_PW')
 
+ROUTER = {
+    'host': TEST_HOST1,
+    'port': 830,
+    'username': TEST_USER,
+    'password': TEST_PW,
+    'hostkey_verify': False,
+}
 
 
 def get_interface():
@@ -24,14 +31,7 @@ def get_interface():
     Get the info from the test VM's uplink interface
     Example is Cat8000V with only 1 gigabit ethernet vNIC
     """
-    router = {
-        'host': TEST_HOST1,
-        'port': 830,
-        'username': TEST_USER,
-        'password': TEST_PW,
-        'hostkey_verify': False,
-    }
-
+    
     server_capabilities = None
 
     int_filter = """
@@ -50,7 +50,7 @@ def get_interface():
 
     """.strip()
 
-    with manager.connect(**router) as session:
+    with manager.connect(**ROUTER) as session:
         server_capabilities = copy(session.server_capabilities)
         raw_response = session.get(int_filter)
 
@@ -58,7 +58,31 @@ def get_interface():
         response = xmltodict.parse(raw_response.xml)['rpc-reply']['data']
         stats = response['interfaces-state']['interface']
         config = response['interfaces']['interface']
+        
+        # Print out the description changed from before
+        print(f'The description is: {config['description']}')
         return response
 
+def set_interface():
+    """
+    Test script just to drop some info
+    """
+
+    desc_config = """
+    <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+        <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+            <interface>
+                <name>GigabitEthernet1</name>
+                <description>VM uplink</description>
+            </interface>
+        </interfaces>
+    </config>
+    """
+
+    with manager.connect(**ROUTER) as session:
+        return session.edit_config(desc_config, target="running")
+        
+
 if __name__ == '__main__':
+    set_interface()
     get_interface()
