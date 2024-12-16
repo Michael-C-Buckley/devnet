@@ -10,8 +10,21 @@ from json import loads
 from requests import get, Response
 from requests.auth import HTTPBasicAuth
 
-from devnet.common import HostT, STANDARD_HEADERS, TEST_HOST1, TEST_PW, TEST_USER
+# from devnet.common import HostT, STANDARD_HEADERS, TEST_HOST1, TEST_PW, TEST_USER
 
+from ipaddress import IPv4Address as IPv4, IPv6Address as IPv6
+from os import getenv
+
+type HostT = IPv4 | IPv6 | str
+
+TEST_HOST1 = getenv('IOS_XE1')
+TEST_USER = getenv('IOS_USER')
+TEST_PW = getenv('IOS_PW')
+
+STANDARD_HEADERS = {
+    'Accept': "application/yang-data+json",
+    'Content-Type': "application/yang-data+json",
+}
 
 def get_interfaces(host: HostT, port: int, user: str, password: str) -> Response:
     base_url = f'https://{host}:{port}/restconf/data/ietf-interfaces:interfaces/interface'
@@ -22,10 +35,7 @@ def get_interfaces(host: HostT, port: int, user: str, password: str) -> Response
         'verify': False,
     }
 
-    return get(base_url, **kwargs)
-
-if __name__ == '__main__':
-    response = get_interfaces(TEST_HOST1, 443, TEST_USER, TEST_PW)
+    response = get(base_url, **kwargs)
 
     if response.status_code == 200:
         print(f'Interface info for: {TEST_HOST1}')
@@ -37,3 +47,20 @@ if __name__ == '__main__':
 
     else:
         print(f'Unable to obtain data for: {TEST_HOST1}')
+
+def get_capabilities(host: HostT, port: int, user: str, password: str) -> Response:
+    base_url = f'https://{host}:{port}/restconf/data/netconf-state/capabilities'
+
+    kwargs = {
+        'headers': STANDARD_HEADERS,
+        'auth': HTTPBasicAuth(user, password),  # Add Basic Authentication here
+        'verify': False,
+    }
+
+    return get(base_url, **kwargs)
+
+if __name__ == '__main__':
+    # get_interfaces(TEST_HOST1, 443, TEST_USER, TEST_PW)
+    print(get_capabilities(TEST_HOST1, 443, TEST_USER, TEST_PW))
+
+    
